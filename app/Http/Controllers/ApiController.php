@@ -39,8 +39,21 @@ class ApiController extends Controller{
         //Devolver la respuesta añadida
         return response()->json($solicitudes, 201);
 
-    } catch (\Exception $e) {
+        } catch (\Exception $e) {
         return response()->json(['error' => 'Error'], 500);
+        }
     }
-}
+
+    // Función para eliminar solicitud a través de API por ID
+    public function delete($id){
+        $solicitudes = Solicitudes::find($id);
+        if(!$solicitudes){
+            return response()->json(['error' => 'No existe la solicitud'], 404);
+        }else {
+            $solicitudes->delete();
+        }
+        return response()->json(['success' => 'Solicitud eliminada'], 200);
+
+    }
+
 }

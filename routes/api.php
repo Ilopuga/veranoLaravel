@@ -6,4 +6,4 @@ use App\Http\Controllers\ApiController;
 
 Route::middleware('api')->get('/solicitudes', [ApiController::class, 'index']);
 Route::middleware('api')->post('/solicitudes', [ApiController::class, 'add']);
-
+Route::middleware('api')->delete('/solicitudes/{id}', [ApiController::class, 'delete']);
