@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Listado de solicitudes</h1>
+        <h1 class="bg-red-800 text-white">Listado de solicitudes</h1>
         <!--Iteramos el array para mostrar lso registros -->
         <ul>
             <li v-for="solicitud in solicitudes" :key="solicitud.id">
