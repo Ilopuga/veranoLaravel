@@ -81,10 +81,10 @@ return [
     ],
 
     //Indicamos las rutas que están protegidas por sanctum
-    paths=>[
-        'api/*',
-        'login',
-        'logout',
-    ]
+    'paths' => [
+    'api/*',
+    'login',
+    'logout',
+]
 
 ];
