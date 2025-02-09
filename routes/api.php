@@ -4,21 +4,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SolicitudController;
 
-Route::middleware('api')->get('/solicitudes', [ApiController::class, 'index']);
-Route::middleware('api')->post('/solicitudes', [ApiController::class, 'add']);
-Route::middleware('api')->delete('/solicitudes/{id}', [ApiController::class, 'delete']);
-
-//Rutas de autenticación
+// Rutas protegidas por autenticación (solo accesibles para usuarios logueados)
 Route::middleware(['auth:sanctum'])->group(function () {
-    //Obtener información del usuario autenticado
+    // Obtener todas las solicitudes (solo usuarios autenticados)
+    Route::middleware('api')->get('/solicitudes', [SolicitudController::class, 'index']);
+    
+    // Crear una solicitud (solo usuarios autenticados)
+    Route::middleware('api')->post('/solicitudes', [SolicitudController::class, 'add']);
+    
+    // Eliminar una solicitud (solo usuarios autenticados)
+    Route::middleware('api')->delete('/solicitudes/{id}', [SolicitudController::class, 'delete']);
+});
+
+// Rutas de autenticación
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Obtener información del usuario autenticado
     Route::get('/user', [AuthController::class, 'user']);
-    //Cerrar sesión
+    
+    // Cerrar sesión
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-//2 vistas más post y get para que cuando estemos en Vue no tengamos problemas
-// Le damos nombre a las rutas para poder usarlas en el front
+// Rutas públicas para login y registro
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
