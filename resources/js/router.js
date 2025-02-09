@@ -1,14 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
 import SolicitudList from "@/components/SolicitudList.vue";
-
+import AddSolicitud from "./components/AddSolicitud.vue";
 import Login from "@/components/Login.vue";
 import Profile from "@/components/Profile.vue";
 import Registro from "@/components/Registro.vue";
 
+// Definimos las rutas
 const routes = [
     {
-        path: "/solicitudes",
+        path: "/", // Página principal
+        name: "home",
+        component: SolicitudList, // O el componente que desees mostrar al inicio
+    },
+    {
+        path: "/agregar-solicitud", // Página para agregar una nueva solicitud
+        name: "addSolicitud",
+        component: AddSolicitud,
+    },
+    {
+        path: "/solicitudes", // Lista de solicitudes
+        name: "solicitudes",
         component: SolicitudList,
+    },
+    {
+        path: "/agregar-solicitud", // Página para agregar una solicitud
+        name: "addSolicitud",
+        component: AddSolicitud,
     },
     {
         path: "/registro",
@@ -31,6 +48,7 @@ const routes = [
     },
 ];
 
+// Creamos el enrutador
 const router = createRouter({
     history: createWebHistory(),
     routes,

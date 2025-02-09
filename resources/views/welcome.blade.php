@@ -6,11 +6,14 @@
 
         <title>Proyecto Verano Laravel con Vue</title>
 
+        <!-- Cargar CSS con Vite -->
         @vite('resources/css/app.css')
     </head>
     <body>
-        <!--Decimos donde queremos que se monte-->
-      <div id="app"></div>
+        <!-- Este es el punto de montaje de Vue -->
+        <div id="app"></div>
+
+        <!-- Cargar JS con Vite -->
         @vite('resources/js/app.js')
     </body>
 </html>

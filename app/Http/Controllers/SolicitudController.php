@@ -2,54 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Solicitudes;  // Asegúrate de que el nombre del modelo esté correctamente importadoasd
+use App\Models\Solicitudes;
 use Illuminate\Http\Request;
+use App\Models\Actividades;  // Asegúrate de importar el modelo Actividades
 
 class SolicitudController extends Controller
 {
-    /**
-     * Mostrar la lista de todas las solicitudes.
-     */
-    public function index()
-    {
-        // Aquí se obtiene la lista de solicitudes
-        $solicitudes = Solicitudes::all();  // Recupera todas las solicitudes
-        return response()->json($solicitudes);  // Devuelve las solicitudes en formato JSON
-    }
-
-    /**
-     * Agregar una nueva solicitud.
-     */
+    // Método para agregar nuevas solicitudes
     public function add(Request $request)
     {
-        // Validación de los datos enviados
+        // Validación de los datos
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255',  // El campo nombre es obligatorio y debe ser una cadena
-            'descripcion' => 'nullable|string',  // El campo descripcion es opcional
+            'dni' => 'required|string|max:255',  // DNI es obligatorio
+            'nombre' => 'required|string|max:255',  // Nombre es obligatorio
+            'email' => 'required|email|max:255',  // Email es obligatorio y debe tener formato válido
+            'telefono' => 'required|string|max:20',  // Teléfono es obligatorio
+            'actividad_id' => 'required|exists:actividades,id',  // Actividad debe existir en la tabla actividades
         ]);
 
-        // Creación de una nueva solicitud
+        // Creación de la nueva solicitud
         $solicitud = Solicitudes::create([
+            'dni' => $validated['dni'],
             'nombre' => $validated['nombre'],
-            'descripcion' => $validated['descripcion'] ?? null,  // Si no se proporciona, se coloca null
+            'email' => $validated['email'],
+            'telefono' => $validated['telefono'],
+            'actividad_id' => $validated['actividad_id'],
+            'user_id' => auth()->id(), // Asocia la solicitud al usuario autenticado
         ]);
 
-        // Retorna la nueva solicitud con código de estado 201 (Creado)
+        // Retorno de la nueva solicitud con código de estado 201
         return response()->json($solicitud, 201);
     }
 
-    /**
-     * Eliminar una solicitud por su ID.
-     */
+    // Función para obtener las solicitudes del usuario logueado
+    public function index()
+    {
+        // Solo devolver solicitudes del usuario autenticado
+        return response()->json(Solicitudes::where('user_id', auth()->id())->get());
+    }
+
+    // Función para eliminar una solicitud
     public function delete($id)
     {
-        // Busca la solicitud por su ID, si no se encuentra lanza un error 404
-        $solicitud = Solicitudes::findOrFail($id);
+        // Buscar la solicitud por su ID y asegurar que sea del usuario logueado
+        $solicitud = Solicitudes::where('user_id', auth()->id()) // Solo permite eliminar solicitudes del usuario autenticado
+            ->findOrFail($id);
 
-        // Elimina la solicitud
+        // Eliminar la solicitud
         $solicitud->delete();
 
-        // Devuelve un mensaje confirmando que la solicitud fue eliminada
+        // Retornar mensaje de éxito
         return response()->json(['message' => 'Solicitud eliminada correctamente']);
     }
 }

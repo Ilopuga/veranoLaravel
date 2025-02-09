@@ -31,3 +31,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
+
+Route::middleware('auth:sanctum')->post('/solicitudes', [SolicitudController::class, 'add']);
+
+// Ruta para obtener las solicitudes solo si el usuario está autenticado
+Route::middleware('auth:sanctum')->get('/solicitudes', [SolicitudController::class, 'index']);
+
+// Ruta para agregar una solicitud solo si el usuario está autenticado
+Route::middleware('auth:sanctum')->post('/solicitudes', [SolicitudController::class, 'store']);
+
