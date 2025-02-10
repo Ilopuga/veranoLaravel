@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SolicitudController;
+use App\Http\Controllers\ActividadController;
 
 // Rutas protegidas por autenticación (solo accesibles para usuarios logueados)
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -36,7 +37,8 @@ Route::middleware('auth:sanctum')->post('/solicitudes', [SolicitudController::cl
 
 // Ruta para obtener las solicitudes solo si el usuario está autenticado
 Route::middleware('auth:sanctum')->get('/solicitudes', [SolicitudController::class, 'index']);
+Route::middleware('auth:sanctum')->post('/solicitudes', [SolicitudController::class, 'add']);
 
-// Ruta para agregar una solicitud solo si el usuario está autenticado
-Route::middleware('auth:sanctum')->post('/solicitudes', [SolicitudController::class, 'store']);
 
+// Rutas de la API para obtener las actividades
+Route::middleware('auth:sanctum')->get('/actividades', [ActividadController::class, 'index']);

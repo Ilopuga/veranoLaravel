@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('actividades', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
             $table->string('nombre');
             $table->string('tema');
             $table->integer('plazas');
