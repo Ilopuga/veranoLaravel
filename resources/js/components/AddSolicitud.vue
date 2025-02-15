@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2>Añadir Nueva Solicitud</h2>
+    <h2>{{ isEdit ? 'Modificar Solicitud' : 'Añadir Nueva Solicitud' }}</h2>
 
-    <!-- Formulario para agregar una nueva solicitud -->
+    <!-- Formulario para agregar/modificar una solicitud -->
     <form @submit.prevent="submitForm">
       <div>
         <label for="dni">DNI</label>
@@ -33,7 +33,7 @@
         </select>
       </div>
 
-      <button type="submit">Agregar Solicitud</button>
+      <button type="submit">{{ isEdit ? 'Modificar Solicitud' : 'Agregar Solicitud' }}</button>
     </form>
 
     <!-- Mensajes de éxito o error -->
@@ -45,6 +45,7 @@
 
 <script>
 export default {
+  props: ['id'],  // Prop para recibir el parámetro de ID desde la URL
   data() {
     return {
       dni: '',
@@ -52,24 +53,27 @@ export default {
       email: '',
       telefono: '',
       actividad_id: null,
-      descripcion: '',
-      actividades: [],  // Lista de actividades para el dropdown
+      actividades: [],
       mensaje: '',
-      mensajeClase: ''
+      mensajeClase: '',
+      isEdit: false,  // Flag para saber si estamos editando
     };
   },
   created() {
-    // Obtener las actividades del backend para mostrarlas en el formulario
-    this.fetchActividades();
+    this.fetchActividades();  // Cargar actividades
+    if (this.id) {
+      this.isEdit = true;
+      this.fetchSolicitud(this.id);  // Si hay ID, cargamos la solicitud para editar
+    }
   },
   methods: {
-    // Función para obtener las actividades
+    // Cargar actividades
     async fetchActividades() {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/actividades', {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Usando el token de autenticación
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
 
@@ -84,14 +88,47 @@ export default {
         this.mensajeClase = 'error';
       }
     },
-    // Función para enviar el formulario
-    async submitForm() {
+
+    // Cargar la solicitud que se va a editar
+    async fetchSolicitud(id) {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/solicitudes', {
-          method: 'POST',
+        const response = await fetch(`http://127.0.0.1:8000/api/solicitudes/${id}`, {
+          method: 'GET',
           headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
+        if (response.ok) {
+          const solicitud = await response.json();
+          this.dni = solicitud.dni;
+          this.nombre = solicitud.nombre;
+          this.email = solicitud.email;
+          this.telefono = solicitud.telefono;
+          this.actividad_id = solicitud.actividad_id;
+        } else {
+          this.mensaje = 'Error al cargar la solicitud';
+          this.mensajeClase = 'error';
+        }
+      } catch (error) {
+        this.mensaje = 'Error en la conexión al cargar la solicitud';
+        this.mensajeClase = 'error';
+      }
+    },
+
+    // Enviar el formulario para crear o modificar la solicitud
+    async submitForm() {
+      const url = this.isEdit
+        ? `http://127.0.0.1:8000/api/solicitudes/${this.id}`
+        : 'http://127.0.0.1:8000/api/solicitudes';
+      const method = this.isEdit ? 'PUT' : 'POST';
+
+      try {
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Usando el token de autenticación
           },
           body: JSON.stringify({
             dni: this.dni,
@@ -103,16 +140,17 @@ export default {
         });
 
         if (response.ok) {
-          this.mensaje = 'Solicitud añadida con éxito';
+          this.mensaje = this.isEdit ? 'Solicitud modificada con éxito' : 'Solicitud añadida con éxito';
           this.mensajeClase = 'success';
-          this.dni = ''; // Limpiar el formulario
+          this.dni = '';
           this.nombre = '';
           this.email = '';
           this.telefono = '';
           this.actividad_id = null;
+          this.$router.push({ name: 'solicitudes' });
         } else {
           const data = await response.json();
-          this.mensaje = data.message || 'Error al añadir solicitud';
+          this.mensaje = data.message || 'Error al procesar la solicitud';
           this.mensajeClase = 'error';
         }
       } catch (error) {

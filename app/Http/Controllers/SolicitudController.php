@@ -58,13 +58,26 @@ class SolicitudController extends Controller
         'email' => 'required|email|max:255',
         'telefono' => 'required|string|max:20',
         'actividad_id' => 'required|exists:actividades,id',
+    
     ]);
+
 
     // Actualización de la solicitud
     $solicitud->update($validated);
 
     return response()->json($solicitud);
     }
+    // En SolicitudController.php
+    public function show($id)
+    {
+        // Buscar la solicitud por su ID
+        $solicitud = Solicitudes::where('user_id', auth()->id()) // Asegura que la solicitud es del usuario logueado
+        ->findOrFail($id);
+
+    // Retornar la solicitud como respuesta JSON
+    return response()->json($solicitud);
+    }
+
 
     // Función para eliminar una solicitud
     public function delete($id)

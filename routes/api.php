@@ -10,18 +10,21 @@ use App\Http\Controllers\ActividadController;
 // Rutas protegidas por autenticación (solo accesibles para usuarios logueados)
 Route::middleware(['auth:sanctum'])->group(function () {
     // Obtener todas las solicitudes (solo usuarios autenticados)
-    Route::middleware('api')->get('/solicitudes', [SolicitudController::class, 'index']);
+    Route::get('/solicitudes', [SolicitudController::class, 'index']);
     
+    // Obtener una solicitud específica por ID (solo usuarios autenticados)
+    Route::get('/solicitudes/{id}', [SolicitudController::class, 'show']);  // Esta es la ruta que falta
+
     // Crear una solicitud (solo usuarios autenticados)
-    Route::middleware('api')->post('/solicitudes', [SolicitudController::class, 'add']);
+    Route::post('/solicitudes', [SolicitudController::class, 'add']);
     
     // Eliminar una solicitud (solo usuarios autenticados)
-    Route::middleware('api')->delete('/solicitudes/{id}', [SolicitudController::class, 'delete']);
+    Route::delete('/solicitudes/{id}', [SolicitudController::class, 'delete']);
 
     // Actualizar una solicitud (solo usuarios autenticados)
-    Route::middleware('api')->put('/solicitudes/{id}', [SolicitudController::class, 'update']);
-    
+    Route::put('/solicitudes/{id}', [SolicitudController::class, 'update']);
 });
+
 
 // Rutas de autenticación
 Route::middleware(['auth:sanctum'])->group(function () {

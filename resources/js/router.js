@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import SolicitudList from "@/components/SolicitudList.vue";
-import AddSolicitud from "./components/AddSolicitud.vue";
+import AddSolicitud from "./components/AddSolicitud.vue"; // Componente de formulario para añadir/editar
 import Login from "@/components/Login.vue";
 import Profile from "@/components/Profile.vue";
 import Registro from "@/components/Registro.vue";
@@ -10,22 +10,18 @@ const routes = [
     {
         path: "/", // Página principal
         name: "home",
-        component: SolicitudList, // O el componente que desees mostrar al inicio
+        component: SolicitudList,
     },
     {
-        path: "/agregar-solicitud", // Página para agregar una nueva solicitud
+        path: "/agregar-solicitud/:id?", // Página para agregar/modificar solicitud. Le paso el parametro
         name: "addSolicitud",
         component: AddSolicitud,
+        props: true, // Habilita el paso de parámetros en la URL como propiedades
     },
     {
         path: "/solicitudes", // Lista de solicitudes
         name: "solicitudes",
         component: SolicitudList,
-    },
-    {
-        path: "/agregar-solicitud", // Página para agregar una solicitud
-        name: "addSolicitud",
-        component: AddSolicitud,
     },
     {
         path: "/registro",
@@ -41,14 +37,12 @@ const routes = [
         path: "/profile",
         name: "Profile",
         component: Profile,
-        //Obliga a que el usuario este autenticado para acceder a la ruta. Ruta protegida
         meta: {
             requiresAuth: true,
         },
     },
 ];
 
-// Creamos el enrutador
 const router = createRouter({
     history: createWebHistory(),
     routes,
