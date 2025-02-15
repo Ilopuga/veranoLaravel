@@ -17,6 +17,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // Eliminar una solicitud (solo usuarios autenticados)
     Route::middleware('api')->delete('/solicitudes/{id}', [SolicitudController::class, 'delete']);
+
+    // Actualizar una solicitud (solo usuarios autenticados)
+    Route::middleware('api')->put('/solicitudes/{id}', [SolicitudController::class, 'update']);
+    
 });
 
 // Rutas de autenticación

@@ -33,11 +33,6 @@
         </select>
       </div>
 
-      <div>
-        <label for="descripcion">Descripción</label>
-        <textarea v-model="descripcion" id="descripcion"></textarea>
-      </div>
-
       <button type="submit">Agregar Solicitud</button>
     </form>
 
@@ -104,7 +99,6 @@ export default {
             email: this.email,
             telefono: this.telefono,
             actividad_id: this.actividad_id,
-            descripcion: this.descripcion,
           }),
         });
 
@@ -116,7 +110,6 @@ export default {
           this.email = '';
           this.telefono = '';
           this.actividad_id = null;
-          this.descripcion = '';
         } else {
           const data = await response.json();
           this.mensaje = data.message || 'Error al añadir solicitud';
