@@ -1,43 +1,84 @@
 <template>
-  <div>
-    <h2>{{ isEdit ? 'Modificar Solicitud' : 'Añadir Nueva Solicitud' }}</h2>
+  <div class="max-w-4xl mx-auto p-6">
+    <h2 class="text-2xl font-bold text-center mb-6">{{ isEdit ? 'Modificar Solicitud' : 'Añadir Nueva Solicitud' }}</h2>
 
     <!-- Formulario para agregar/modificar una solicitud -->
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="submitForm" class="bg-white p-6 rounded-lg shadow-md space-y-4">
+
+      <!-- DNI -->
       <div>
-        <label for="dni">DNI</label>
-        <input type="text" v-model="dni" id="dni" required />
+        <label for="dni" class="block text-sm font-semibold text-gray-700">DNI</label>
+        <input
+          type="text"
+          v-model="dni"
+          id="dni"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
       </div>
 
+      <!-- Nombre -->
       <div>
-        <label for="nombre">Nombre</label>
-        <input type="text" v-model="nombre" id="nombre" required />
+        <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre</label>
+        <input
+          type="text"
+          v-model="nombre"
+          id="nombre"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
       </div>
 
+      <!-- Correo Electrónico -->
       <div>
-        <label for="email">Correo Electrónico</label>
-        <input type="email" v-model="email" id="email" required />
+        <label for="email" class="block text-sm font-semibold text-gray-700">Correo Electrónico</label>
+        <input
+          type="email"
+          v-model="email"
+          id="email"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
       </div>
 
+      <!-- Teléfono -->
       <div>
-        <label for="telefono">Teléfono</label>
-        <input type="text" v-model="telefono" id="telefono" required />
+        <label for="telefono" class="block text-sm font-semibold text-gray-700">Teléfono</label>
+        <input
+          type="text"
+          v-model="telefono"
+          id="telefono"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
       </div>
 
+      <!-- Actividad -->
       <div>
-        <label for="actividad_id">Actividad</label>
-        <select v-model="actividad_id" id="actividad_id" required>
+        <label for="actividad_id" class="block text-sm font-semibold text-gray-700">Actividad</label>
+        <select
+          v-model="actividad_id"
+          id="actividad_id"
+          required
+          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
           <option v-for="actividad in actividades" :key="actividad.id" :value="actividad.id">
             {{ actividad.nombre }}
           </option>
         </select>
       </div>
 
-      <button type="submit">{{ isEdit ? 'Modificar Solicitud' : 'Agregar Solicitud' }}</button>
+      <!-- Botón de envío -->
+      <button
+        type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {{ isEdit ? 'Modificar Solicitud' : 'Agregar Solicitud' }}
+      </button>
     </form>
 
     <!-- Mensajes de éxito o error -->
-    <div v-if="mensaje" :class="mensajeClase">
+    <div v-if="mensaje" :class="['mt-4 text-center p-2', mensajeClase === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']">
       {{ mensaje }}
     </div>
   </div>
