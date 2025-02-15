@@ -47,5 +47,9 @@ Route::middleware('auth:sanctum')->get('/solicitudes', [SolicitudController::cla
 Route::middleware('auth:sanctum')->post('/solicitudes', [SolicitudController::class, 'add']);
 
 
-// Rutas de la API para obtener las actividades
-Route::middleware('auth:sanctum')->get('/actividades', [ActividadController::class, 'index']);
+// Rutas de la API para obtener las actividades. Comento para que no pida autenticación
+//Route::middleware('auth:sanctum')->get('/actividades', [ActividadController::class, 'index']);
+
+
+// Ruta para obtener todas las actividades (pública)
+Route::get('/actividades', [ActividadController::class, 'index']);

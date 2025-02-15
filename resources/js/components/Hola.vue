@@ -3,8 +3,9 @@
       <!-- Cabecera -->
       <header class="bg-gray-800 text-white py-4">
         <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-          <h1 class="text-2xl font-bold">Verano 2025</h1>
-  
+            <!-- quiero que sea enlace el titulo -->
+             <a href="/" class="text-2xl font-bold">Verano 2025</a>
+          
           <!-- Mostrar Login/Registro si no está logueado, y solicitudes si está logueado -->
           <nav>
             <ul class="flex space-x-4">
