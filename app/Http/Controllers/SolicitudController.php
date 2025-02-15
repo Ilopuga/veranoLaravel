@@ -38,7 +38,11 @@ class SolicitudController extends Controller
     public function index()
     {
         // Solo devolver solicitudes del usuario autenticado
-        return response()->json(Solicitudes::where('user_id', auth()->id())->get());
+        $solicitudes = Solicitudes::where('user_id', auth()->id())
+                                  ->select('id', 'dni', 'nombre', 'email', 'telefono', 'actividad_id')
+                                  ->get();
+
+        return response()->json($solicitudes);
     }
 
     // Función para eliminar una solicitud

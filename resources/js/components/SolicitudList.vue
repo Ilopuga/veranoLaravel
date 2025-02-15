@@ -1,29 +1,32 @@
 <template>
-    <div>
-        <h1 class="bg-red-800 text-white">Listado de solicitudes</h1>
-        <!-- Iteramos el array para mostrar los registros -->
-        <ul>
-            <li v-for="solicitud in solicitudes" :key="solicitud.id">
-                {{ solicitud.nombre }}
-            </li>
-        </ul>
+    <div class="max-w-4xl mx-auto p-6">
+        <!-- Título -->
+        <h1 class="text-3xl text-white bg-green-800 p-4 rounded-lg mb-6 text-center">
+            Listado de Solicitudes
+        </h1>
+        
+        <!-- Lista de solicitudes -->
+        <div class="space-y-4">
+            <div v-for="solicitud in solicitudes" :key="solicitud.id" class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <h3 class="text-xl font-semibold text-gray-800">{{ solicitud.nombre }}</h3>
+                <p class="text-gray-600 mt-2">DNI: {{ solicitud.dni }}</p>
+                <p class="text-gray-600 mt-2">Nombre: {{ solicitud.nombre }}</p>
+                <p class="text-gray-600 mt-2">Email: {{ solicitud.email }}</p>
+                <p class="text-gray-600 mt-2">Actividad: {{ solicitud.actividad_id }}</p>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-    // Este array está vacío, pero se llenará con los datos de la API
     data() {
         return {
             solicitudes: []
         };
     },
-    // Cargamos los datos al montar el componente
     mounted() {
-        // Obtenemos el token del localStorage
         const token = localStorage.getItem('token');
-
-        // Si el token existe, lo añadimos a las cabeceras de la solicitud
         if (token) {
             fetch('http://127.0.0.1:8000/api/solicitudes', {
                 method: 'GET',
@@ -38,7 +41,7 @@ export default {
                 throw new Error('No autorizado o error en la respuesta');
             })
             .then(data => {
-                this.solicitudes = data; // Asignamos los datos a 'solicitudes'
+                this.solicitudes = data;
             })
             .catch(error => {
                 console.error('Error al obtener las solicitudes:', error);
@@ -49,3 +52,4 @@ export default {
     }
 };
 </script>
+

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Proyecto Verano Laravel con Vue</title>
+        <title>Verano 2025</title>
 
         <!-- Cargar CSS con Vite -->
         @vite('resources/css/app.css')
