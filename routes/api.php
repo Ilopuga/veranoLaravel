@@ -7,31 +7,25 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\ActividadController;
 
-// Rutas protegidas por autenticación (solo accesibles para usuarios logueados)
+// Rutas protegidas por autenticación (solo con login)
 Route::middleware(['auth:sanctum'])->group(function () {
-    // Obtener todas las solicitudes (solo usuarios autenticados)
+    // Obtener todas las solicitudes
     Route::get('/solicitudes', [SolicitudController::class, 'index']);
     
-    // Obtener una solicitud específica por ID (solo usuarios autenticados)
-    Route::get('/solicitudes/{id}', [SolicitudController::class, 'show']);  // Esta es la ruta que falta
+    // Obtener una solicitud específica por ID
+    Route::get('/solicitudes/{id}', [SolicitudController::class, 'show']);  
 
-    // Crear una solicitud (solo usuarios autenticados)
+    // Crear una solicitud 
     Route::post('/solicitudes', [SolicitudController::class, 'add']);
     
-    // Eliminar una solicitud (solo usuarios autenticados)
+    // Eliminar una solicitud 
     Route::delete('/solicitudes/{id}', [SolicitudController::class, 'delete']);
 
-    // Actualizar una solicitud (solo usuarios autenticados)
+    // Actualizar una solicitud 
     Route::put('/solicitudes/{id}', [SolicitudController::class, 'update']);
-});
 
-
-// Rutas de autenticación
-Route::middleware(['auth:sanctum'])->group(function () {
-    // Obtener información del usuario autenticado
+    // Rutas de autenticación
     Route::get('/user', [AuthController::class, 'user']);
-    
-    // Cerrar sesión
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
@@ -39,17 +33,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
-
-Route::middleware('auth:sanctum')->post('/solicitudes', [SolicitudController::class, 'add']);
-
-// Ruta para obtener las solicitudes solo si el usuario está autenticado
-Route::middleware('auth:sanctum')->get('/solicitudes', [SolicitudController::class, 'index']);
-Route::middleware('auth:sanctum')->post('/solicitudes', [SolicitudController::class, 'add']);
-
-
-// Rutas de la API para obtener las actividades. Comento para que no pida autenticación
-//Route::middleware('auth:sanctum')->get('/actividades', [ActividadController::class, 'index']);
-
 
 // Ruta para obtener todas las actividades (pública)
 Route::get('/actividades', [ActividadController::class, 'index']);
