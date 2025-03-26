@@ -129,7 +129,7 @@
         }
       },
       editSolicitud(id) {
-        console.log("Editar solicitud", id);
+        this.$router.push({ name: "addSolicitud", params: { id } });
       },
     },
   };
